@@ -99,5 +99,9 @@ export default {
 <style>
 .badge {
     min-width: 62px;
+    font-family: "Manrope", BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 0.02em;
 }
 </style>

@@ -3,35 +3,50 @@
 @import "node_modules/bootstrap/scss/bootstrap";
 
 #app {
-    font-family:
-        "Twemoji Country Flags",
-        BlinkMacSystemFont,
-        segoe ui,
-        Roboto,
-        helvetica neue,
-        Arial,
-        noto sans,
-        sans-serif,
-        apple color emoji,
-        segoe ui emoji,
-        segoe ui symbol,
-        noto color emoji;
+    font-family: $font-family-base;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.01em;
 }
 
 h1 {
-    font-size: 32px;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
 }
 
 h2 {
-    font-size: 26px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+h3, h4, h5, h6 {
+    font-weight: 600;
+    letter-spacing: -0.02em;
 }
 
 textarea.form-control {
-    border-radius: 19px;
+    border-radius: $input-radius;
+}
+
+.form-control,
+.form-select {
+    border-radius: $input-radius;
+    font-family: $font-family-base;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+    &:focus {
+        box-shadow: 0 0 0 3px rgba($primary, 0.2);
+    }
 }
 
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 6px;
+    height: 6px;
 }
 
 .bg-maintenance {
@@ -53,7 +68,7 @@ textarea.form-control {
 }
 
 .list-group {
-    border-radius: 0.75rem;
+    border-radius: $card-radius;
 
     .dark & {
         .list-group-item {
@@ -92,8 +107,8 @@ optgroup {
 }
 
 .modal-content {
-    border-radius: 1rem;
-    box-shadow: 0 15px 70px rgba(0, 0, 0, 0.1);
+    border-radius: $card-radius;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
 
     .dark & {
         box-shadow: 0 15px 70px rgb(0 0 0);
@@ -108,9 +123,9 @@ optgroup {
 
 .shadow-box {
     //overflow: hidden;   // Forget why add this, but multiple select hide by this
-    box-shadow: 0 15px 70px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 20px rgba(0, 0, 0, 0.07);
     padding: 10px;
-    border-radius: 10px;
+    border-radius: $card-radius;
 
     &.big-padding {
         padding: 20px;
@@ -120,10 +135,15 @@ optgroup {
 .btn {
     padding-left: 20px;
     padding-right: 20px;
+    font-family: $font-family-base;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    transition: all 0.15s ease;
 }
 
 .btn-sm {
     border-radius: 25px;
+    font-size: 0.8rem;
 }
 
 .btn-primary {
@@ -251,7 +271,7 @@ optgroup {
 
 // Dark Theme override here
 .dark {
-    background-color: #090c10;
+    background-color: $dark-bg2;
     color: $dark-font-color;
 
     mark,
@@ -499,7 +519,7 @@ optgroup {
         display: block;
         text-decoration: none;
         padding: 13px 15px 10px 15px;
-        border-radius: 10px;
+        border-radius: 0.75rem;
         transition: all ease-in-out 0.15s;
 
         &.disabled {
@@ -621,7 +641,7 @@ h5.settings-subheading::after {
 .css-editor {
     /* we dont use `language-` classes anymore so thats why we need to add background and text color manually */
 
-    border-radius: 1rem;
+    border-radius: $card-radius;
     padding: 10px 5px;
     border: 1px solid #ced4da;
 
@@ -670,6 +690,90 @@ $shadow-box-padding: 20px;
 .zoom-cursor {
     cursor: zoom-in;
 }
+
+// ─── Modern layout & color refinements ───────────────────────────────────────
+
+// Badge / status pill
+.badge {
+    font-family: $font-family-base;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+
+    &.bg-primary {
+        background-color: $primary !important;
+        color: #052e16 !important; // dark green for contrast on bright green
+    }
+
+    &.bg-danger {
+        background-color: $danger !important;
+    }
+
+    &.bg-warning {
+        background-color: $warning !important;
+        color: #431407 !important;
+    }
+}
+
+// Soft surface cards in light mode
+.shadow-box {
+    border: 1px solid rgba(0, 0, 0, 0.05);
+
+    .dark & {
+        border: 1px solid $dark-border-color;
+    }
+}
+
+// Monitor list sidebar — subtle glass effect in dark mode
+.dark .monitor-list {
+    .item {
+        &:hover {
+            background-color: rgba($primary, 0.07);
+        }
+
+        &.active {
+            background-color: rgba($primary, 0.12);
+            border-left: 3px solid $primary;
+            padding-left: 12px;
+        }
+    }
+}
+
+// Light mode active monitor item
+.monitor-list .item.active {
+    background-color: $highlight-white;
+    border-left: 3px solid $primary;
+    padding-left: 12px;
+}
+
+// Form inputs — consistent radius & subtle border
+.form-control,
+.form-select {
+    border-color: #e2e8f0;
+
+    .dark & {
+        border-color: $dark-border-color;
+    }
+}
+
+// Nav link active accent
+.nav-pills .nav-link.active {
+    background-color: $primary;
+    color: #052e16 !important;
+    font-weight: 700;
+}
+
+// Section headings
+h5.settings-subheading {
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #0f172a;
+
+    .dark & {
+        color: $dark-font-color;
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 // Localization
 

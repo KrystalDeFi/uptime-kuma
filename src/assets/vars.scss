@@ -1,23 +1,31 @@
-$primary: #5cdd8b;
-$danger: #dc3545;
-$warning: #f8a306;
-$maintenance: #1747f5;
+// Brand
+$primary: #4ade80;        // brighter, more vivid green
+$danger: #f43f5e;         // rose-500
+$warning: #fb923c;        // orange-400
+$maintenance: #3b82f6;    // blue-500
 $link-color: #111;
 $border-radius: 50rem;
-$secondary-text: #aaa;
+$secondary-text: #94a3b8;  // slate-400
 
-$highlight: #7ce8a4;
-$highlight-white: #e7faec;
+$highlight: #86efac;       // green-300
+$highlight-white: #f0fdf4; // green-50
 
-$dark-font-color: #b1b8c0;
+// Dark mode
+$dark-font-color: #cbd5e1;  // slate-300
 $dark-font-color2: #020b05;
-$dark-bg: #0d1117;
-$dark-bg2: #070a10;
-$dark-border-color: #1d2634;
-$dark-header-bg: #161b22;
+$dark-bg: #0f172a;          // slate-900
+$dark-bg2: #080f1f;
+$dark-border-color: #1e293b; // slate-800
+$dark-header-bg: #1e293b;
 
+// Easing
 $easing-in: cubic-bezier(0.54, 0.78, 0.55, 0.97);
 $easing-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 $easing-in-out: cubic-bezier(0.79, 0.14, 0.15, 0.86);
 
-$dropdown-border-radius: 0.5rem;
+$dropdown-border-radius: 0.625rem;
+
+// Modern tokens
+$card-radius: 1rem;
+$input-radius: 0.625rem;
+$font-family-base: "Manrope", "Twemoji Country Flags", BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
