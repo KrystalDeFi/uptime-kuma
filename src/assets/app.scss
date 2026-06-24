@@ -92,21 +92,32 @@ $shadow-box-padding: 20px;
     padding: 10px 24px;
 }
 
-// Primary — brand green
+// Primary — dark slate (actions, not status)
 .btn-primary {
-    background-color: $primary;
-    border-color: $primary;
-    color: #052e16;
+    background-color: $text-primary;
+    border-color: $text-primary;
+    color: #ffffff;
 
     &:hover, &:active, &.active {
-        background-color: darken($primary, 6%);
-        border-color: darken($primary, 6%);
-        color: #052e16;
+        background-color: #1e293b;
+        border-color: #1e293b;
+        color: #ffffff;
     }
     &:focus-visible {
-        box-shadow: 0 0 0 3px rgba($primary, 0.35);
+        box-shadow: 0 0 0 3px rgba($text-primary, 0.25);
     }
-    .dark & { color: #052e16; }
+
+    .dark & {
+        background-color: #f8fafc;
+        border-color: #f8fafc;
+        color: $text-primary;
+
+        &:hover, &:active, &.active {
+            background-color: #e2e8f0;
+            border-color: #e2e8f0;
+            color: $text-primary;
+        }
+    }
 }
 
 // Normal — neutral gray (replaces btn-normal)
@@ -290,9 +301,14 @@ textarea.form-control { border-radius: $input-radius; }
 // ─── Nav pills ───────────────────────────────────────────────────────────────
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-    background-color: $primary;
-    color: #052e16 !important;
+    background-color: $text-primary;
+    color: #ffffff !important;
     font-weight: 700;
+
+    .dark & {
+        background-color: #f8fafc;
+        color: $text-primary !important;
+    }
 }
 
 // ─── Alerts ──────────────────────────────────────────────────────────────────

@@ -116,56 +116,42 @@
             </p>
 
             <div class="functions">
-                <div class="btn-group" role="group">
-                    <button v-if="monitor.active" class="btn btn-normal" @click="pauseDialog">
-                        <font-awesome-icon icon="pause" />
-                        {{ $t("Pause") }}
-                    </button>
-                    <button
-                        v-if="!monitor.active"
-                        class="btn btn-primary"
-                        :disabled="monitor.forceInactive"
-                        @click="resumeMonitor"
-                    >
-                        <font-awesome-icon icon="play" />
-                        {{ $t("Resume") }}
-                    </button>
-                    <router-link :to="'/edit/' + monitor.id" class="btn btn-normal">
-                        <font-awesome-icon icon="edit" />
-                        {{ $t("Edit") }}
-                    </router-link>
-                    <router-link :to="'/clone/' + monitor.id" class="btn btn-normal">
-                        <font-awesome-icon icon="clone" />
-                        {{ $t("Clone") }}
-                    </router-link>
-                    <button class="btn btn-normal text-danger" @click="deleteDialog">
-                        <font-awesome-icon icon="trash" />
-                        {{ $t("Delete") }}
-                    </button>
-                </div>
+                <button v-if="monitor.active" class="btn btn-normal" @click="pauseDialog">
+                    <font-awesome-icon icon="pause" />
+                    {{ $t("Pause") }}
+                </button>
+                <button
+                    v-if="!monitor.active"
+                    class="btn btn-primary"
+                    :disabled="monitor.forceInactive"
+                    @click="resumeMonitor"
+                >
+                    <font-awesome-icon icon="play" />
+                    {{ $t("Resume") }}
+                </button>
+                <router-link :to="'/edit/' + monitor.id" class="btn btn-normal">
+                    <font-awesome-icon icon="edit" />
+                    {{ $t("Edit") }}
+                </router-link>
+                <router-link :to="'/clone/' + monitor.id" class="btn btn-normal">
+                    <font-awesome-icon icon="clone" />
+                    {{ $t("Clone") }}
+                </router-link>
+                <div class="functions-divider" />
+                <button class="btn btn-outline-danger btn-delete" @click="deleteDialog">
+                    <font-awesome-icon icon="trash" />
+                    {{ $t("Delete") }}
+                </button>
             </div>
 
             <div class="shadow-box">
-                <div class="row">
-                    <div class="col-md-8">
-                        <HeartbeatBar :monitor-id="monitor.id" />
-                        <span class="word">
-                            {{ $t("checkEverySecond", [monitor.interval]) }} ({{
-                                secondsToHumanReadableFormat(monitor.interval)
-                            }})
-                        </span>
-                    </div>
-                    <div class="col-md-4 text-center">
-                        <span
-                            class="badge rounded-pill"
-                            :class="'bg-' + status.color"
-                            style="font-size: 30px"
-                            data-testid="monitor-status"
-                        >
-                            {{ status.text }}
-                        </span>
-                    </div>
+                <div class="heartbeat-header">
+                    <Status :status="lastHeartBeat.status" data-testid="monitor-status" />
+                    <span class="word">
+                        {{ $t("checkEverySecond", [monitor.interval]) }} ({{ secondsToHumanReadableFormat(monitor.interval) }})
+                    </span>
                 </div>
+                <HeartbeatBar :monitor-id="monitor.id" />
             </div>
 
             <!-- Push Examples -->
@@ -205,69 +191,36 @@
             </div>
 
             <!-- Stats -->
-            <div class="shadow-box big-padding text-center stats">
-                <div class="row">
-                    <div
-                        v-if="monitor.type !== 'group'"
-                        class="col-12 col-sm col row d-flex align-items-center d-sm-block"
-                    >
-                        <h4 class="col-4 col-sm-12">{{ pingTitle() }}</h4>
-                        <p class="col-4 col-sm-12 mb-0 mb-sm-2">({{ $t("Current") }})</p>
-                        <span class="col-4 col-sm-12 num">
+            <div class="shadow-box stats">
+                <div class="stats-grid">
+                    <div v-if="monitor.type !== 'group'" class="stat-item">
+                        <span class="stat-label">{{ pingTitle() }} <span class="stat-period">({{ $t("Current") }})</span></span>
+                        <span class="stat-value">
                             <a href="#" @click.prevent="showPingChartBox = !showPingChartBox">
                                 <CountUp :value="ping" />
                             </a>
                         </span>
                     </div>
-                    <div
-                        v-if="monitor.type !== 'group'"
-                        class="col-12 col-sm col row d-flex align-items-center d-sm-block"
-                    >
-                        <h4 class="col-4 col-sm-12">{{ pingTitle(true) }}</h4>
-                        <p class="col-4 col-sm-12 mb-0 mb-sm-2">({{ $t("hours", 24) }})</p>
-                        <span class="col-4 col-sm-12 num">
-                            <CountUp :value="avgPing" />
-                        </span>
+                    <div v-if="monitor.type !== 'group'" class="stat-item">
+                        <span class="stat-label">{{ pingTitle(true) }} <span class="stat-period">({{ $t("hours", 24) }})</span></span>
+                        <span class="stat-value"><CountUp :value="avgPing" /></span>
                     </div>
-
-                    <!-- Uptime (24-hour) -->
-                    <div class="col-12 col-sm col row d-flex align-items-center d-sm-block">
-                        <h4 class="col-4 col-sm-12">{{ $t("Uptime") }}</h4>
-                        <p class="col-4 col-sm-12 mb-0 mb-sm-2">({{ $t("hours", 24) }})</p>
-                        <span class="col-4 col-sm-12 num">
-                            <Uptime :monitor="monitor" type="24" />
-                        </span>
+                    <div class="stat-item">
+                        <span class="stat-label">{{ $t("Uptime") }} <span class="stat-period">({{ $t("hours", 24) }})</span></span>
+                        <span class="stat-value"><Uptime :monitor="monitor" type="24" /></span>
                     </div>
-
-                    <!-- Uptime (30-day) -->
-                    <div class="col-12 col-sm col row d-flex align-items-center d-sm-block">
-                        <h4 class="col-4 col-sm-12">{{ $t("Uptime") }}</h4>
-                        <p class="col-4 col-sm-12 mb-0 mb-sm-2">({{ $t("days", 30) }})</p>
-                        <span class="col-4 col-sm-12 num">
-                            <Uptime :monitor="monitor" type="720" />
-                        </span>
+                    <div class="stat-item">
+                        <span class="stat-label">{{ $t("Uptime") }} <span class="stat-period">({{ $t("days", 30) }})</span></span>
+                        <span class="stat-value"><Uptime :monitor="monitor" type="720" /></span>
                     </div>
-
-                    <!-- Uptime (1-year) -->
-                    <div class="col-12 col-sm col row d-flex align-items-center d-sm-block">
-                        <h4 class="col-4 col-sm-12">{{ $t("Uptime") }}</h4>
-                        <p class="col-4 col-sm-12 mb-0 mb-sm-2">({{ $t("years", 1) }})</p>
-                        <span class="col-4 col-sm-12 num">
-                            <Uptime :monitor="monitor" type="1y" />
-                        </span>
+                    <div class="stat-item">
+                        <span class="stat-label">{{ $t("Uptime") }} <span class="stat-period">({{ $t("years", 1) }})</span></span>
+                        <span class="stat-value"><Uptime :monitor="monitor" type="1y" /></span>
                     </div>
-
-                    <div v-if="tlsInfo" class="col-12 col-sm col row d-flex align-items-center d-sm-block">
-                        <h4 class="col-4 col-sm-12">{{ $t("Cert Exp.") }}</h4>
-                        <p class="col-4 col-sm-12 mb-0 mb-sm-2">
-                            (
-                            <Datetime :value="tlsInfo.certInfo.validTo" date-only />
-                            )
-                        </p>
-                        <span class="col-4 col-sm-12 num">
-                            <a href="#" @click.prevent="toggleCertInfoBox = !toggleCertInfoBox">
-                                {{ $t("days", tlsInfo.certInfo.daysRemaining) }}
-                            </a>
+                    <div v-if="tlsInfo" class="stat-item">
+                        <span class="stat-label">{{ $t("Cert Exp.") }} <span class="stat-period">(<Datetime :value="tlsInfo.certInfo.validTo" date-only />)</span></span>
+                        <span class="stat-value">
+                            <a href="#" @click.prevent="toggleCertInfoBox = !toggleCertInfoBox">{{ $t("days", tlsInfo.certInfo.daysRemaining) }}</a>
                             <font-awesome-icon
                                 v-if="tlsInfo.hostnameMatchMonitorUrl === false"
                                 class="cert-info-warn"
@@ -276,16 +229,9 @@
                             />
                         </span>
                     </div>
-                    <div v-if="domainInfo" class="col-12 col-sm col row d-flex align-items-center d-sm-block">
-                        <h4 class="col-4 col-sm-12">{{ $t("labelDomainExpiry") }}</h4>
-                        <p class="col-4 col-sm-12 mb-0 mb-sm-2">
-                            (
-                            <Datetime :value="domainInfo.expiresOn" date-only />
-                            )
-                        </p>
-                        <span class="col-4 col-sm-12 num">
-                            {{ $t("days", domainInfo.daysRemaining) }}
-                        </span>
+                    <div v-if="domainInfo" class="stat-item">
+                        <span class="stat-label">{{ $t("labelDomainExpiry") }} <span class="stat-period">(<Datetime :value="domainInfo.expiresOn" date-only />)</span></span>
+                        <span class="stat-value">{{ $t("days", domainInfo.daysRemaining) }}</span>
                     </div>
                 </div>
             </div>
@@ -302,12 +248,8 @@
             </transition>
 
             <!-- Ping Chart -->
-            <div v-if="showPingChartBox" class="shadow-box big-padding text-center ping-chart-wrapper">
-                <div class="row">
-                    <div class="col">
-                        <PingChart :monitor-id="monitor.id" />
-                    </div>
-                </div>
+            <div v-if="showPingChartBox" class="shadow-box ping-chart-wrapper">
+                <PingChart :monitor-id="monitor.id" />
             </div>
 
             <!-- Screenshot -->
@@ -326,27 +268,30 @@
             </div>
 
             <div class="shadow-box table-shadow-box">
-                <div class="dropdown dropdown-clear-data">
-                    <button
-                        class="btn btn-sm btn-outline-danger dropdown-toggle"
-                        type="button"
-                        data-bs-toggle="dropdown"
-                    >
-                        <font-awesome-icon icon="trash" />
-                        {{ $t("Clear Data") }}
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li>
-                            <button type="button" class="dropdown-item" @click="clearEventsDialog">
-                                {{ $t("Events") }}
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button" class="dropdown-item" @click="clearHeartbeatsDialog">
-                                {{ $t("Heartbeats") }}
-                            </button>
-                        </li>
-                    </ul>
+                <div class="table-header">
+                    <span class="table-title">{{ $t("Events") }}</span>
+                    <div class="dropdown">
+                        <button
+                            class="btn btn-sm btn-outline-normal dropdown-toggle"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                        >
+                            <font-awesome-icon icon="trash" />
+                            {{ $t("Clear Data") }}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <button type="button" class="dropdown-item" @click="clearEventsDialog">
+                                    {{ $t("Events") }}
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="dropdown-item" @click="clearHeartbeatsDialog">
+                                    {{ $t("Heartbeats") }}
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <table class="table table-borderless table-hover">
                     <thead>
@@ -876,6 +821,45 @@ export default {
     margin-top: 16px;
 }
 
+// ─── Action buttons row ───────────────────────────────────────────────────────
+.functions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        padding: 0.42rem 1rem;
+    }
+
+    .functions-divider {
+        flex: 1;
+    }
+
+    .btn-delete {
+        color: #ef4444;
+        border-color: #fca5a5;
+
+        &:hover {
+            background-color: #fef2f2;
+            border-color: #ef4444;
+            color: #b91c1c;
+        }
+
+        .dark & {
+            color: #f87171;
+            border-color: rgba(#ef4444, 0.35);
+            &:hover { background-color: rgba(#ef4444, 0.1); }
+        }
+    }
+}
+
 @media (max-width: 767px) {
     .badge {
         margin-top: 14px;
@@ -884,43 +868,10 @@ export default {
 
 @media (max-width: 550px) {
     .ping-chart-wrapper {
-        padding: 10px !important;
-    }
-
-    .dropdown-clear-data {
-        margin-bottom: 10px;
+        padding: 12px !important;
     }
 }
 
-@media (max-width: 450px) {
-    .btn {
-        padding-top: 10px;
-        font-size: 0.9em;
-    }
-
-    .btn-group {
-        width: 100%;
-
-        .btn,
-        a.btn {
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            padding-left: 10px;
-            padding-right: 10px;
-        }
-    }
-}
-
-@media (max-width: 400px) {
-    .dropdown-clear-data {
-        button {
-            display: block;
-            padding-top: 4px;
-        }
-    }
-}
 
 .url {
     color: $primary;
@@ -937,9 +888,16 @@ export default {
     margin-top: 25px;
 }
 
+.heartbeat-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
 .word {
     color: $secondary-text;
-    font-size: 14px;
+    font-size: 0.8rem;
 }
 
 table {
@@ -950,27 +908,73 @@ table {
     }
 }
 
-.stats p {
-    font-size: 13px;
-    color: $secondary-text;
+.stats {
+    padding: 16px 20px;
 }
 
-.stats {
-    padding: 10px;
+.stats-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+}
 
-    .col {
-        margin: 20px 0;
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 20px 10px 0;
+    min-width: 110px;
+    flex: 1 1 110px;
+
+    // divider between items
+    & + .stat-item {
+        padding-left: 20px;
+        border-left: 1px solid $border-light;
+
+        .dark & { border-left-color: $dark-border-color; }
     }
 }
 
-@media (max-width: 550px) {
-    .stats {
-        .col {
-            margin: 10px 0 !important;
-        }
+.stat-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: $text-secondary;
+    white-space: nowrap;
+}
 
-        h4 {
-            font-size: 1.1rem;
+.stat-period {
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    color: $text-secondary;
+    opacity: 0.7;
+}
+
+.stat-value {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: $text-primary;
+
+    a { color: inherit; text-decoration: none; &:hover { color: $primary; } }
+
+    .dark & { color: $dark-font-color; }
+}
+
+@media (max-width: 600px) {
+    .stats-grid { gap: 0; }
+    .stat-item {
+        flex: 1 1 50%;
+        padding: 10px 12px 10px 0;
+        border-left: none !important;
+
+        &:nth-child(even) {
+            padding-left: 12px;
+            border-left: 1px solid $border-light !important;
+            .dark & { border-left-color: $dark-border-color !important; }
         }
     }
 }
@@ -979,14 +983,22 @@ table {
     color: black;
 }
 
-.dropdown-clear-data {
-    float: right;
+.table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
 
-    ul {
-        width: 100%;
-        min-width: unset;
-        padding-left: 0;
-    }
+.table-title {
+    font-family: $font-family-base;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: $text-secondary;
+
+    .dark & { color: $dark-font-color; }
 }
 
 .dark {
@@ -998,21 +1010,6 @@ table {
         color: $dark-font-color;
     }
 
-    .dropdown-clear-data {
-        ul {
-            background-color: $dark-bg;
-            border-color: $dark-bg2;
-            border-width: 2px;
-
-            li button {
-                color: $dark-font-color;
-            }
-
-            li button:hover {
-                background-color: $dark-bg2;
-            }
-        }
-    }
 }
 
 .tags {

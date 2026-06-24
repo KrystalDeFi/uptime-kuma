@@ -13,13 +13,12 @@
         </div>
 
         <!-- Desktop header -->
-        <header v-if="!$root.isMobile" class="d-flex flex-wrap justify-content-center py-3 mb-3 border-bottom">
+        <header v-if="!$root.isMobile" class="d-flex flex-wrap justify-content-center py-3 mb-3 border-bottom app-header">
             <router-link
                 to="/dashboard"
-                class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none"
+                class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none ms-4"
             >
-                <object class="bi me-2 ms-4" width="40" height="40" data="/icon.svg" />
-                <span class="fs-4 title">{{ $t("Uptime Kuma") }}</span>
+                <img src="https://krystal.app/assets/images/logos/krystal.svg" alt="Krystal" class="brand-logo" />
             </router-link>
 
             <a
@@ -118,10 +117,9 @@
         </header>
 
         <!-- Mobile header -->
-        <header v-else class="d-flex flex-wrap justify-content-center pt-2 pb-2 mb-3">
+        <header v-else class="d-flex flex-wrap justify-content-center pt-2 pb-2 mb-3 app-header">
             <router-link to="/dashboard" class="d-flex align-items-center text-dark text-decoration-none">
-                <object class="bi" width="40" height="40" data="/icon.svg" />
-                <span class="fs-4 title ms-2">Uptime Kuma</span>
+                <img src="https://krystal.app/assets/images/logos/krystal.svg" alt="Krystal" class="brand-logo" />
             </router-link>
         </header>
 
@@ -247,22 +245,18 @@ export default {
     border-radius: $btn-radius;
     padding: 0.42rem 0.875rem;
     transition: background-color 0.12s ease, color 0.12s ease;
-    color: $text-secondary;
+    // White-ish on the dark header
+    color: rgba(255, 255, 255, 0.65);
 
     &:hover {
-        background-color: $surface-subtle;
-        color: $text-primary;
-
-        .dark & {
-            background-color: rgba($primary, 0.08);
-            color: $dark-font-color;
-        }
+        background-color: rgba(255, 255, 255, 0.08);
+        color: #ffffff;
     }
 
     &.router-link-active,
     &.active {
-        background-color: $primary;
-        color: #052e16 !important;
+        background-color: rgba(255, 255, 255, 0.14);
+        color: #ffffff !important;
         font-weight: 700;
     }
 
@@ -316,11 +310,17 @@ main {
     min-height: calc(100vh - 160px);
 }
 
-.title {
-    font-family: "Manrope", BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    font-size: 1.2rem !important;
+.app-header {
+    background-color: #0f172a;
+    border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.brand-logo {
+    height: 28px;
+    width: auto;
+    display: block;
+    // SVG is dark — invert to white on the dark header
+    filter: brightness(0) invert(1);
 }
 
 .nav {
@@ -346,25 +346,15 @@ main {
         gap: 6px;
         align-items: center;
         background-color: transparent;
-        border: 1px solid $border-light;
+        border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: $btn-radius;
         padding: 0.38rem 0.75rem;
         transition: border-color 0.12s ease, background-color 0.12s ease;
-        color: $text-primary !important;
+        color: rgba(255, 255, 255, 0.85) !important;
 
         &:hover {
-            background-color: $surface-subtle;
-            border-color: #cbd5e1;
-        }
-
-        .dark & {
-            border-color: $dark-border-color;
-            color: $dark-font-color !important;
-
-            &:hover {
-                background-color: $dark-surface;
-                border-color: $dark-border-color;
-            }
+            background-color: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.35);
         }
     }
 
@@ -436,17 +426,6 @@ main {
 }
 
 .dark {
-    header {
-        background-color: rgba($dark-header-bg, 0.9);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-bottom-color: $dark-border-color !important;
-
-        span {
-            color: #f0f6fc;
-        }
-    }
-
     .bottom-nav {
         background-color: rgba($dark-bg, 0.9);
         backdrop-filter: blur(12px);

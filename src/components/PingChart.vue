@@ -1,26 +1,29 @@
 <template>
-    <div>
-        <div class="period-options">
-            <button
-                type="button"
-                class="btn btn-light dropdown-toggle btn-period-toggle"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-            >
-                {{ chartPeriodOptions[chartPeriodHrs] }}&nbsp;
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end">
-                <li v-for="(item, key) in chartPeriodOptions" :key="key">
-                    <button
-                        type="button"
-                        class="dropdown-item"
-                        :class="{ active: chartPeriodHrs == key }"
-                        @click="chartPeriodHrs = key"
-                    >
-                        {{ item }}
-                    </button>
-                </li>
-            </ul>
+    <div class="ping-chart">
+        <div class="chart-header">
+            <span class="chart-title">{{ $t("Response") }}</span>
+            <div class="period-options">
+                <button
+                    type="button"
+                    class="btn btn-period-toggle dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                >
+                    {{ chartPeriodOptions[chartPeriodHrs] }}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li v-for="(item, key) in chartPeriodOptions" :key="key">
+                        <button
+                            type="button"
+                            class="dropdown-item"
+                            :class="{ active: chartPeriodHrs == key }"
+                            @click="chartPeriodHrs = key"
+                        >
+                            {{ item }}
+                        </button>
+                    </li>
+                </ul>
+            </div>
         </div>
         <div class="chart-wrapper" :class="{ loading: loading }">
             <Line :data="chartData" :options="chartOptions" />
@@ -204,7 +207,12 @@ export default {
                         },
                         labels: {
                             color: this.$root.theme === "light" ? "rgba(12,12,18,1.0)" : "rgba(220,220,220,1.0)",
-                            // Filter to display only the lines in the legend
+                            usePointStyle: true,
+                            pointStyle: "line",
+                            boxWidth: 20,
+                            boxHeight: 2,
+                            padding: 14,
+                            font: { size: 11, weight: "600" },
                             filter: function (legendItem, data) {
                                 const ds = data.datasets[legendItem.datasetIndex];
                                 return ds && ds.type !== "bar";
@@ -417,6 +425,7 @@ export default {
                         data: pingData,
                         fill: "origin",
                         tension: 0.2,
+                        borderWidth: 1.5,
                         borderColor: "#4ABF74",
                         backgroundColor: "#4ABF7438",
                         yAxisID: "y",
@@ -547,6 +556,7 @@ export default {
                         data: minPingData,
                         fill: "origin",
                         tension: 0.2,
+                        borderWidth: 1.5,
                         borderColor: "#126331",
                         backgroundColor: "#2F9C5914",
                         yAxisID: "y",
@@ -557,6 +567,7 @@ export default {
                         data: avgPingData,
                         fill: "origin",
                         tension: 0.2,
+                        borderWidth: 1.5,
                         borderColor: "#5CDD8B",
                         backgroundColor: "#5CDD8B06",
                         yAxisID: "y",
@@ -567,6 +578,7 @@ export default {
                         data: maxPingData,
                         fill: "origin",
                         tension: 0.2,
+                        borderWidth: 1.5,
                         borderColor: "#21b55a",
                         backgroundColor: "#1E7A4214",
                         yAxisID: "y",
@@ -595,71 +607,109 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/vars.scss";
 
-.form-select {
-    width: unset;
-    display: inline-flex;
+.ping-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.chart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.chart-title {
+    font-family: $font-family-base;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: $text-secondary;
+
+    .dark & { color: $dark-font-color; }
 }
 
 .period-options {
-    padding: 0.1em 1em;
-    margin-bottom: -1.2em;
-    float: right;
     position: relative;
     z-index: 10;
 
     .dropdown-menu {
-        padding: 0;
-        min-width: 50px;
-        font-size: 0.9em;
+        min-width: 80px;
+        padding: 4px;
+        border-radius: $input-radius;
+        border: 1px solid $border-light;
+        box-shadow: $shadow-float;
+        font-size: 0.8rem;
 
         .dark & {
-            background: $dark-bg;
+            background: $dark-surface;
+            border-color: $dark-border-color;
         }
 
         .dropdown-item {
-            border-radius: 0.3rem;
-            padding: 2px 16px 4px;
+            border-radius: calc($input-radius - 2px);
+            padding: 4px 12px;
+            font-family: $font-family-base;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: $text-primary;
 
-            .dark & {
-                background: $dark-bg;
-                color: $dark-font-color;
+            &:hover { background-color: $surface-subtle; }
+
+            &.active {
+                background-color: $text-primary;
+                color: white;
             }
 
-            .dark &:hover {
-                background: $dark-font-color;
+            .dark & {
+                color: $dark-font-color;
+                &:hover { background: $dark-bg; }
+            }
+
+            .dark &.active {
+                background: $primary;
                 color: $dark-font-color2;
             }
         }
+    }
+}
 
-        .dark & .dropdown-item.active {
-            background: $primary;
-            color: $dark-font-color2;
-        }
+.btn-period-toggle {
+    font-family: $font-family-base;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    background: transparent;
+    border: 1px solid $border-light;
+    border-radius: $input-radius;
+    color: $text-secondary;
+    transition: border-color 0.12s ease, background-color 0.12s ease;
+
+    &:hover {
+        background-color: $surface-subtle;
+        border-color: #cbd5e1;
+        color: $text-primary;
     }
 
-    .btn-period-toggle {
-        padding: 2px 15px;
-        background: transparent;
-        border: 0;
-        color: $link-color;
-        opacity: 0.7;
-        font-size: 0.9em;
+    &::after { vertical-align: 0.15em; }
 
-        &::after {
-            vertical-align: 0.155em;
-        }
+    .dark & {
+        color: $dark-font-color;
+        border-color: $dark-border-color;
 
-        .dark & {
-            color: $dark-font-color;
+        &:hover {
+            background-color: $dark-surface;
         }
     }
 }
 
 .chart-wrapper {
-    margin-bottom: 0.5em;
+    &.loading { filter: blur(10px); }
+}
 
-    &.loading {
-        filter: blur(10px);
-    }
+.form-select {
+    width: unset;
+    display: inline-flex;
 }
 </style>
