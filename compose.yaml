@@ -9,7 +9,7 @@ services:
       - uptime-kuma-data:/app/data
     ports:
       # <Host Port>:<Container Port>
-      - "3002:3001"
+      - "3001:3001"
 
 volumes:
   uptime-kuma-data:
