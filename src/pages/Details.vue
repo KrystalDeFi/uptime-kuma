@@ -1,7 +1,8 @@
 <template>
     <transition name="slide-fade" appear>
         <div v-if="monitor">
-            <router-link v-if="group !== ''" :to="monitorURL(monitor.parent)">
+            <router-link v-if="group !== ''" :to="monitorURL(monitor.parent)" class="group-breadcrumb">
+                <font-awesome-icon icon="layer-group" class="group-icon" />
                 {{ group }}
             </router-link>
             <h1>
@@ -816,6 +817,39 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/vars.scss";
+
+.group-breadcrumb {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 8px;
+    padding: 3px 10px 3px 8px;
+    border-radius: $chip-radius;
+    background-color: rgba($primary, 0.08);
+    border: 1px solid rgba($primary, 0.2);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: darken(#22c55e, 10%);
+    text-decoration: none;
+    letter-spacing: 0.01em;
+    transition: background-color 0.12s ease;
+
+    &:hover {
+        background-color: rgba($primary, 0.15);
+        color: darken(#22c55e, 15%);
+    }
+
+    .dark & {
+        background-color: rgba($primary, 0.12);
+        border-color: rgba($primary, 0.25);
+        color: $primary;
+    }
+}
+
+.group-icon {
+    font-size: 0.7rem;
+    opacity: 0.8;
+}
 
 .form-check {
     margin-top: 16px;

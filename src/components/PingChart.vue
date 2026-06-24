@@ -2,6 +2,23 @@
     <div class="ping-chart">
         <div class="chart-header">
             <span class="chart-title">{{ $t("Response") }}</span>
+
+            <!-- Inline legend shown only for the multi-line (stats) view -->
+            <div v-if="chartPeriodHrs !== '0'" class="chart-legend">
+                <span class="legend-item">
+                    <span class="legend-line" style="background:#126331"></span>
+                    {{ $t("minPing") }}
+                </span>
+                <span class="legend-item">
+                    <span class="legend-line" style="background:#5CDD8B"></span>
+                    {{ $t("avgPing") }}
+                </span>
+                <span class="legend-item">
+                    <span class="legend-line" style="background:#21b55a"></span>
+                    {{ $t("maxPing") }}
+                </span>
+            </div>
+
             <div class="period-options">
                 <button
                     type="button"
@@ -190,34 +207,7 @@ export default {
                         },
                     },
                     legend: {
-                        // Enable the legend and display only the non-bar datasets (the lines)
-                        display: true,
-                        position: "top",
-                        align: "start",
-                        // Indicates that the legend is clickable (cursor pointer)
-                        onHover: function (event, legendItem, legend) {
-                            if (legend && legend.chart && legend.chart.canvas) {
-                                legend.chart.canvas.style.cursor = "pointer";
-                            }
-                        },
-                        onLeave: function (event, legendItem, legend) {
-                            if (legend && legend.chart && legend.chart.canvas) {
-                                legend.chart.canvas.style.cursor = "";
-                            }
-                        },
-                        labels: {
-                            color: this.$root.theme === "light" ? "rgba(12,12,18,1.0)" : "rgba(220,220,220,1.0)",
-                            usePointStyle: true,
-                            pointStyle: "line",
-                            boxWidth: 20,
-                            boxHeight: 2,
-                            padding: 14,
-                            font: { size: 11, weight: "600" },
-                            filter: function (legendItem, data) {
-                                const ds = data.datasets[legendItem.datasetIndex];
-                                return ds && ds.type !== "bar";
-                            },
-                        },
+                        display: false,
                     },
                 },
             };
@@ -617,6 +607,33 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 12px;
+}
+
+.chart-legend {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: $text-secondary;
+
+    .dark & { color: $dark-font-color; }
+}
+
+.legend-line {
+    display: inline-block;
+    width: 18px;
+    height: 2px;
+    border-radius: 1px;
+    flex-shrink: 0;
 }
 
 .chart-title {
