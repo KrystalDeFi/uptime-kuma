@@ -1,5 +1,5 @@
 services:
-  uptime-kuma:
+  k-uptime-kuma:
     build:
       context: .
       dockerfile: docker/dockerfile

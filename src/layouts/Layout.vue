@@ -241,18 +241,29 @@ export default {
 @import "../assets/vars.scss";
 
 .nav-link {
+    font-family: $font-family-base;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border-radius: $btn-radius;
+    padding: 0.42rem 0.875rem;
+    transition: background-color 0.12s ease, color 0.12s ease;
+    color: $text-secondary;
+
     &:hover {
-        background-color: $primary;
-        color: #fff;
+        background-color: $surface-subtle;
+        color: $text-primary;
 
         .dark & {
-            background-color: $primary;
-            color: #000;
+            background-color: rgba($primary, 0.08);
+            color: $dark-font-color;
         }
+    }
 
-        &.active {
-            background-color: $highlight;
-        }
+    &.router-link-active,
+    &.active {
+        background-color: $primary;
+        color: #052e16 !important;
+        font-weight: 700;
     }
 
     &.status-page {
@@ -264,13 +275,13 @@ export default {
     z-index: 1000;
     position: fixed;
     bottom: 0;
-    height: calc(60px + env(safe-area-inset-bottom));
+    height: calc(62px + env(safe-area-inset-bottom));
     width: 100%;
     left: 0;
-    background-color: #fff;
-    box-shadow:
-        0 15px 47px 0 rgba(0, 0, 0, 0.05),
-        0 5px 14px 0 rgba(0, 0, 0, 0.05);
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.06), 0 -4px 16px rgba(0, 0, 0, 0.04);
     text-align: center;
     white-space: nowrap;
     padding: 0 10px env(safe-area-inset-bottom);
@@ -281,15 +292,18 @@ export default {
         display: inline-block;
         height: 100%;
         padding: 8px 10px 0;
-        font-size: 13px;
-        color: #c1c1c1;
+        font-family: "Manrope", BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: #94a3b8;
         overflow: hidden;
         text-decoration: none;
+        transition: color 0.15s ease;
 
         &.router-link-exact-active,
         &.active {
             color: $primary;
-            font-weight: bold;
+            font-weight: 700;
         }
 
         div {
@@ -303,7 +317,10 @@ main {
 }
 
 .title {
-    font-weight: bold;
+    font-family: "Manrope", BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    font-size: 1.2rem !important;
 }
 
 .nav {
@@ -328,53 +345,75 @@ main {
         display: flex;
         gap: 6px;
         align-items: center;
-        background-color: rgba(200, 200, 200, 0.2);
-        padding: 0.5rem 0.8rem;
+        background-color: transparent;
+        border: 1px solid $border-light;
+        border-radius: $btn-radius;
+        padding: 0.38rem 0.75rem;
+        transition: border-color 0.12s ease, background-color 0.12s ease;
+        color: $text-primary !important;
 
         &:hover {
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: $surface-subtle;
+            border-color: #cbd5e1;
+        }
+
+        .dark & {
+            border-color: $dark-border-color;
+            color: $dark-font-color !important;
+
+            &:hover {
+                background-color: $dark-surface;
+                border-color: $dark-border-color;
+            }
         }
     }
 
     .dropdown-menu {
-        transition: all 0.2s;
         padding-left: 0;
-        padding-bottom: 0;
-        margin-top: 8px !important;
-        border-radius: 16px;
+        padding-bottom: 4px;
+        padding-top: 4px;
+        margin-top: 6px !important;
+        border-radius: $card-radius;
         overflow: hidden;
+        border: 1px solid $border-light;
+        box-shadow: $shadow-float;
 
         .dropdown-divider {
-            margin: 0;
-            border-top: 1px solid rgba(0, 0, 0, 0.4);
+            margin: 4px 0;
+            border-top: 1px solid $border-light;
             background-color: transparent;
         }
 
         .dropdown-item-text {
-            font-size: 14px;
-            padding-bottom: 0.7rem;
+            font-family: $font-family-base;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: $text-secondary;
+            padding-bottom: 0.5rem;
         }
 
         .dropdown-item {
-            padding: 0.7rem 1rem;
+            font-family: $font-family-base;
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 0.6rem 1rem;
+            color: $text-primary;
+            transition: background-color 0.1s ease;
+            &:hover { background-color: $surface-subtle; }
         }
 
         .dark & {
-            background-color: $dark-bg;
+            background-color: $dark-surface;
             color: $dark-font-color;
             border-color: $dark-border-color;
+            box-shadow: 0 4px 32px rgba(0,0,0,.5);
+
+            .dropdown-divider { border-top-color: $dark-border-color; }
 
             .dropdown-item {
                 color: $dark-font-color;
-
-                &.active {
-                    color: $dark-font-color2;
-                    background-color: $highlight !important;
-                }
-
-                &:hover {
-                    background-color: $dark-bg2;
-                }
+                &.active { color: $dark-font-color2; background-color: $highlight !important; }
+                &:hover { background-color: $dark-bg; }
             }
         }
     }
@@ -383,21 +422,25 @@ main {
         display: flex;
         align-items: center;
         justify-content: center;
-        color: white;
+        color: #052e16;
         background-color: $primary;
-        width: 24px;
-        height: 24px;
-        margin-right: 5px;
-        border-radius: 50rem;
-        font-weight: bold;
-        font-size: 10px;
+        width: 28px;
+        height: 28px;
+        margin-right: 4px;
+        border-radius: 50%;
+        font-family: $font-family-base;
+        font-weight: 800;
+        font-size: 11px;
+        flex-shrink: 0;
     }
 }
 
 .dark {
     header {
-        background-color: $dark-header-bg;
-        border-bottom-color: $dark-header-bg !important;
+        background-color: rgba($dark-header-bg, 0.9);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom-color: $dark-border-color !important;
 
         span {
             color: #f0f6fc;
@@ -405,7 +448,19 @@ main {
     }
 
     .bottom-nav {
-        background-color: $dark-bg;
+        background-color: rgba($dark-bg, 0.9);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        box-shadow: 0 -1px 0 $dark-border-color;
+
+        a {
+            color: #475569;
+
+            &.router-link-exact-active,
+            &.active {
+                color: $primary;
+            }
+        }
     }
 }
 

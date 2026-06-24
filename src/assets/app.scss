@@ -2,662 +2,51 @@
 @import "multiselect.scss";
 @import "node_modules/bootstrap/scss/bootstrap";
 
+// ─── Base ─────────────────────────────────────────────────────────────────────
 #app {
     font-family: $font-family-base;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     letter-spacing: -0.01em;
+    color: $text-primary;
 }
 
-h1 {
-    font-size: 2rem;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.2;
-}
+h1 { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; }
+h2 { font-size: 1.375rem; font-weight: 700; letter-spacing: -0.025em; }
+h3, h4, h5, h6 { font-weight: 600; letter-spacing: -0.015em; }
 
-h2 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: -0.025em;
-}
+// ─── Scrollbar ───────────────────────────────────────────────────────────────
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 99px; }
+.dark ::-webkit-scrollbar-thumb { background: $dark-border-color; }
 
-h3, h4, h5, h6 {
-    font-weight: 600;
-    letter-spacing: -0.02em;
-}
+// ─── Utility classes ─────────────────────────────────────────────────────────
+.bg-maintenance  { color: white !important; background-color: $maintenance !important; }
+.bg-dark         { color: white; }
+.text-maintenance { color: $maintenance !important; }
+.incident a, .bg-maintenance a { color: inherit; }
 
-textarea.form-control {
-    border-radius: $input-radius;
-}
-
-.form-control,
-.form-select {
-    border-radius: $input-radius;
-    font-family: $font-family-base;
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
-
-    &:focus {
-        box-shadow: 0 0 0 3px rgba($primary, 0.2);
-    }
-}
-
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-
-.bg-maintenance {
-    color: white !important;
-    background-color: $maintenance !important;
-}
-
-.bg-dark {
-    color: white;
-}
-
-.text-maintenance {
-    color: $maintenance !important;
-}
-
-.incident a,
-.bg-maintenance a {
-    color: inherit;
-}
-
-.list-group {
-    border-radius: $card-radius;
-
-    .dark & {
-        .list-group-item {
-            background-color: $dark-bg;
-            color: $dark-font-color;
-            border-color: $dark-border-color;
-        }
-    }
-}
-
-// optgroup
-optgroup {
-    color: #b1b1b1;
-    option {
-        color: #212529;
-    }
-}
-
-.dark {
-    optgroup {
-        color: #535864;
-        option {
-            color: $dark-font-color;
-        }
-    }
-}
-
-// Scrollbar
-::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 20px;
-}
-
-.modal {
-    backdrop-filter: blur(3px);
-}
-
-.modal-content {
-    border-radius: $card-radius;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
-
-    .dark & {
-        box-shadow: 0 15px 70px rgb(0 0 0);
-        background-color: $dark-bg;
-    }
-}
-
-.VuePagination__count {
-    font-size: 13px;
-    text-align: center;
-}
-
+// ─── Cards / shadow-box ──────────────────────────────────────────────────────
 .shadow-box {
-    //overflow: hidden;   // Forget why add this, but multiple select hide by this
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 20px rgba(0, 0, 0, 0.07);
+    background-color: $surface-raised;
+    box-shadow: $shadow-card;
     padding: 10px;
     border-radius: $card-radius;
+    border: 1px solid $border-light;
 
-    &.big-padding {
-        padding: 20px;
-    }
-}
-
-.btn {
-    padding-left: 20px;
-    padding-right: 20px;
-    font-family: $font-family-base;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    transition: all 0.15s ease;
-}
-
-.btn-sm {
-    border-radius: 25px;
-    font-size: 0.8rem;
-}
-
-.btn-primary {
-    color: white;
-
-    &:hover,
-    &:active,
-    &:focus,
-    &.active {
-        color: white;
-        background-color: $highlight;
-        border-color: $highlight;
-    }
+    &.big-padding { padding: 20px; }
 
     .dark & {
-        color: $dark-font-color2;
-    }
-}
-
-.btn-normal {
-    $bg-color: #f5f5f5;
-
-    background-color: $bg-color;
-    border-color: $bg-color;
-
-    &:hover {
-        $hover-color: darken($bg-color, 3%);
-        background-color: $hover-color;
-        border-color: $hover-color;
-    }
-}
-
-.btn-warning {
-    color: white;
-
-    &:hover,
-    &:active,
-    &:focus,
-    &.active {
-        color: white;
-    }
-}
-
-.btn-info {
-    color: white;
-
-    &:hover,
-    &:active,
-    &:focus,
-    &.active {
-        color: white;
-    }
-}
-
-.btn-dark {
-    background-color: #161b22;
-}
-
-.btn-outline-normal {
-    padding: 4px 10px;
-    border: 1px solid #ced4da;
-    border-radius: 25px;
-    background-color: transparent;
-
-    .dark & {
-        color: $dark-font-color;
-        border: 1px solid $dark-font-color2;
-    }
-
-    &.active {
-        background-color: $highlight-white;
-
-        .dark & {
-            background-color: $dark-font-color2;
-        }
-    }
-}
-
-@media (max-width: 550px) {
-    .table-shadow-box {
-        padding: 10px !important;
-
-        thead {
-            display: none;
-        }
-
-        tbody {
-            .shadow-box {
-                background-color: white;
-            }
-        }
-
-        tr {
-            margin-top: 0 !important;
-            padding: 4px 10px !important;
-            display: block;
-            margin-bottom: 6px;
-
-            td:first-child {
-                font-weight: bold;
-            }
-
-            td:nth-child(-n + 3) {
-                text-align: center;
-            }
-
-            td:last-child {
-                text-align: left;
-            }
-
-            td {
-                border-bottom: 1px solid $dark-font-color;
-                display: block;
-                padding: 4px;
-
-                .badge {
-                    margin: auto;
-                    display: block;
-                    width: 30%;
-                }
-            }
-        }
-    }
-}
-
-// Dark Theme override here
-.dark {
-    background-color: $dark-bg2;
-    color: $dark-font-color;
-
-    mark,
-    .mark {
-        background-color: #b6ad86;
-    }
-
-    &::-webkit-scrollbar-thumb,
-    ::-webkit-scrollbar-thumb {
-        background: $dark-border-color;
-    }
-
-    .shadow-box {
-        &:not(.alert) {
-            background-color: $dark-bg;
-        }
-    }
-
-    .form-check-input {
-        background-color: $dark-bg2;
+        background-color: $dark-surface;
         border-color: $dark-border-color;
-    }
-
-    .input-group-text {
-        background-color: #282f39;
-        border-color: $dark-border-color;
-        color: $dark-font-color;
-    }
-
-    .form-check-input:checked {
-        border-color: $primary; // Re-apply bootstrap border
-    }
-
-    .form-switch .form-check-input {
-        background-color: #232f3b;
-    }
-
-    a:not(.btn),
-    .table,
-    .nav-link {
-        color: $dark-font-color;
-
-        &.btn-info {
-            color: white;
-        }
-    }
-
-    .incident a,
-    .bg-maintenance a {
-        color: inherit;
-    }
-
-    .form-control,
-    .form-control:focus,
-    .form-select,
-    .form-select:focus {
-        color: $dark-font-color;
-        background-color: $dark-bg2;
-    }
-
-    .form-select:disabled {
-        color: rgba($dark-font-color, 0.7);
-        background-color: $dark-bg;
-    }
-
-    .form-control,
-    .form-select {
-        border-color: $dark-border-color;
-    }
-
-    .form-control:disabled,
-    .form-control[readonly] {
-        background-color: #232f3b;
-        opacity: 1;
-    }
-
-    .table-hover > tbody > tr:hover > * {
-        --bs-table-accent-bg: #070a10;
-        color: $dark-font-color;
-    }
-
-    .nav-pills .nav-link.active,
-    .nav-pills .show > .nav-link {
-        color: $dark-font-color2;
-    }
-
-    .bg-primary {
-        color: $dark-font-color2;
-    }
-
-    .btn-secondary {
-        color: white;
-    }
-
-    .btn-normal {
-        $bg-color: $dark-header-bg;
-
-        color: $dark-font-color;
-        background-color: $bg-color;
-        border-color: $bg-color;
-
-        &:hover {
-            $hover-color: darken($bg-color, 3%);
-            background-color: $hover-color;
-            border-color: $hover-color;
-        }
-    }
-
-    .btn-warning {
-        color: $dark-font-color2;
-
-        &:hover,
-        &:active,
-        &:focus,
-        &.active {
-            color: $dark-font-color2;
-        }
-    }
-
-    .btn-close {
         box-shadow: none;
-        filter: invert(1);
-
-        &:hover {
-            opacity: 0.6;
-        }
-    }
-
-    .modal-header {
-        border-color: $dark-bg;
-    }
-
-    .modal-footer {
-        border-color: $dark-bg;
-    }
-
-    // Pagination
-    .page-item.disabled .page-link {
-        background-color: $dark-bg;
-        border-color: $dark-border-color;
-    }
-
-    .page-link {
-        background-color: $dark-bg;
-        border-color: $dark-border-color;
-        color: $dark-font-color;
-    }
-
-    .monitor-list {
-        .item {
-            &:hover {
-                background-color: $dark-bg2;
-            }
-
-            &.active {
-                background-color: $dark-bg2;
-            }
-        }
-    }
-
-    @media (max-width: 550px) {
-        .table-shadow-box {
-            tbody {
-                .shadow-box {
-                    background-color: $dark-bg2;
-
-                    td {
-                        border-bottom: 1px solid $dark-border-color;
-                    }
-                }
-            }
-        }
-    }
-
-    .alert {
-        &.bg-info,
-        &.bg-warning,
-        &.bg-danger,
-        &.bg-maintenance,
-        &.bg-light {
-            color: $dark-font-color2;
-        }
-    }
-}
-
-/*
- * Transitions
- */
-
-// page-change
-.slide-fade-enter-active {
-    transition: all 0.2s $easing-in;
-}
-
-.slide-fade-leave-active {
-    transition: all 0.2s $easing-in;
-}
-
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-    transform: translateY(50px);
-    opacity: 0;
-}
-
-.slide-fade-right-enter-active {
-    transition: all 0.2s $easing-in;
-}
-
-.slide-fade-right-leave-active {
-    transition: all 0.2s $easing-in;
-}
-
-.slide-fade-right-enter-from,
-.slide-fade-right-leave-to {
-    transform: translateX(50px);
-    opacity: 0;
-}
-
-.slide-fade-up-enter-active {
-    transition: all 0.2s $easing-in;
-}
-
-.slide-fade-up-leave-active {
-    transition: all 0.2s $easing-in;
-}
-
-.slide-fade-up-enter-from,
-.slide-fade-up-leave-to {
-    transform: translateY(-50px);
-    opacity: 0;
-}
-
-.monitor-list {
-    &.scrollbar {
-        overflow-y: auto;
-    }
-
-    @media (max-width: 770px) {
-        &.scrollbar {
-            height: calc(100% - 97px);
-        }
-    }
-
-    .item {
-        display: block;
-        text-decoration: none;
-        padding: 13px 15px 10px 15px;
-        border-radius: 0.75rem;
-        transition: all ease-in-out 0.15s;
-
-        &.disabled {
-            opacity: 0.3;
-        }
-
-        .info {
-            white-space: nowrap;
-            overflow: hidden;
-        }
-
-        &:hover {
-            background-color: $highlight-white;
-        }
-
-        &.active {
-            background-color: #cdf8f4;
-        }
-        .tags {
-            // Removes margin to line up tags list with uptime percentage
-            margin-left: -0.25rem;
-        }
-    }
-}
-
-.alert-success {
-    color: #122f21;
-    background-color: $primary;
-    border-color: $primary;
-}
-
-.alert-info {
-    color: #055160;
-    background-color: #cff4fc;
-    border-color: #cff4fc;
-}
-
-.alert-danger {
-    color: #842029;
-    background-color: #f8d7da;
-    border-color: #f8d7da;
-}
-
-.btn-success {
-    color: #fff;
-    background-color: #4caf50;
-    border-color: #4caf50;
-}
-
-[contenteditable="true"] {
-    transition: all $easing-in 0.2s;
-    background-color: rgba(239, 239, 239, 0.7);
-    border-radius: 8px;
-
-    &.no-bg {
-        background-color: transparent !important;
-    }
-
-    &:focus {
-        outline: 0 solid #eee;
-        background-color: rgba(245, 245, 245, 0.9);
-    }
-
-    &:hover {
-        background-color: rgba(239, 239, 239, 0.8);
-    }
-
-    .dark & {
-        background-color: rgba(239, 239, 239, 0.2);
-    }
-
-    /*
-    &::after {
-        margin-left: 5px;
-        content: "🖊️";
-        font-size: 13px;
-        color: #eee;
-    }
-    */
-}
-
-.action {
-    transition: all $easing-in 0.2s;
-
-    &:hover {
-        cursor: pointer;
-        transform: scale(1.2);
-    }
-}
-
-.vue-image-crop-upload .vicp-wrap {
-    border-radius: 10px !important;
-}
-
-.spinner {
-    color: $primary;
-}
-
-.prism-editor__textarea {
-    outline: none !important;
-}
-
-.prism-editor__container {
-    .important {
-        font-weight: var(--bs-body-font-weight) !important;
-    }
-}
-
-h5.settings-subheading::after {
-    content: "";
-    display: block;
-    width: 50%;
-    padding-top: 8px;
-    border-bottom: 1px solid $dark-border-color;
-}
-
-/* required class */
-.code-editor,
-.css-editor {
-    /* we dont use `language-` classes anymore so thats why we need to add background and text color manually */
-
-    border-radius: $card-radius;
-    padding: 10px 5px;
-    border: 1px solid #ced4da;
-
-    .dark & {
-        background: $dark-bg2;
-        border: 1px solid $dark-border-color;
     }
 }
 
 $shadow-box-padding: 20px;
 
 .shadow-box-with-fixed-bottom-bar {
-    padding-top: $shadow-box-padding;
-    padding-bottom: 0;
-    padding-right: $shadow-box-padding;
-    padding-left: $shadow-box-padding;
+    padding: $shadow-box-padding $shadow-box-padding 0;
 }
 
 .fixed-bottom-bar {
@@ -666,115 +55,431 @@ $shadow-box-padding: 20px;
     margin-left: -$shadow-box-padding;
     margin-right: -$shadow-box-padding;
     z-index: 10;
-    background-color: rgba(white, 0.2);
-    backdrop-filter: blur(2px);
-    border-radius: 0 0 10px 10px;
+    background-color: rgba(white, 0.85);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid $border-light;
+    border-radius: 0 0 $card-radius $card-radius;
+    padding: 12px $shadow-box-padding;
 
     .dark & {
-        background-color: rgba($dark-header-bg, 0.9);
+        background-color: rgba($dark-surface, 0.92);
+        border-top-color: $dark-border-color;
     }
 }
 
-@media (max-width: 770px) {
-    .toast-container {
-        margin-bottom: 100px !important;
-    }
-}
-
-@media (max-width: 550px) {
-    .toast-container {
-        margin-bottom: 126px !important;
-    }
-}
-
-.zoom-cursor {
-    cursor: zoom-in;
-}
-
-// ─── Modern layout & color refinements ───────────────────────────────────────
-
-// Badge / status pill
-.badge {
+// ─── Buttons ─────────────────────────────────────────────────────────────────
+// Single consistent button design. Every variant uses the same shape/size.
+.btn {
     font-family: $font-family-base;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-
-    &.bg-primary {
-        background-color: $primary !important;
-        color: #052e16 !important; // dark green for contrast on bright green
-    }
-
-    &.bg-danger {
-        background-color: $danger !important;
-    }
-
-    &.bg-warning {
-        background-color: $warning !important;
-        color: #431407 !important;
-    }
+    font-weight: 600;
+    font-size: 0.875rem;
+    letter-spacing: -0.01em;
+    border-radius: $btn-radius;
+    padding: 7px 16px;
+    transition: background-color 0.15s ease, border-color 0.15s ease,
+                color 0.15s ease, box-shadow 0.15s ease;
+    line-height: 1.5;
 }
 
-// Soft surface cards in light mode
-.shadow-box {
-    border: 1px solid rgba(0, 0, 0, 0.05);
+.btn-sm {
+    font-size: 0.8rem;
+    padding: 4px 12px;
+    border-radius: calc($btn-radius - 1px);
+}
+
+.btn-lg {
+    font-size: 0.95rem;
+    padding: 10px 24px;
+}
+
+// Primary — brand green
+.btn-primary {
+    background-color: $primary;
+    border-color: $primary;
+    color: #052e16;
+
+    &:hover, &:active, &.active {
+        background-color: darken($primary, 6%);
+        border-color: darken($primary, 6%);
+        color: #052e16;
+    }
+    &:focus-visible {
+        box-shadow: 0 0 0 3px rgba($primary, 0.35);
+    }
+    .dark & { color: #052e16; }
+}
+
+// Normal — neutral gray (replaces btn-normal)
+.btn-normal {
+    background-color: $surface-subtle;
+    border: 1px solid $border-light;
+    color: $text-primary;
+
+    &:hover {
+        background-color: darken($surface-subtle, 3%);
+        border-color: #cbd5e1;
+        color: $text-primary;
+    }
+    &:focus-visible {
+        box-shadow: 0 0 0 3px rgba(0,0,0,.08);
+    }
 
     .dark & {
-        border: 1px solid $dark-border-color;
-    }
-}
+        background-color: $dark-surface;
+        border-color: $dark-border-color;
+        color: $dark-font-color;
 
-// Monitor list sidebar — subtle glass effect in dark mode
-.dark .monitor-list {
-    .item {
         &:hover {
-            background-color: rgba($primary, 0.07);
-        }
-
-        &.active {
-            background-color: rgba($primary, 0.12);
-            border-left: 3px solid $primary;
-            padding-left: 12px;
+            background-color: lighten($dark-surface, 4%);
         }
     }
 }
 
-// Light mode active monitor item
-.monitor-list .item.active {
-    background-color: $highlight-white;
-    border-left: 3px solid $primary;
-    padding-left: 12px;
+// Danger
+.btn-danger {
+    &:focus-visible { box-shadow: 0 0 0 3px rgba($danger, 0.3); }
 }
 
-// Form inputs — consistent radius & subtle border
+// Warning
+.btn-warning {
+    color: #451a03;
+    &:hover, &:active, &:focus, &.active { color: #451a03; }
+}
+
+// Info
+.btn-info {
+    color: white;
+    &:hover, &:active, &:focus, &.active { color: white; }
+}
+
+.btn-dark { background-color: $dark-surface; }
+
+// Outline-normal — ghost button, consistent with btn-normal shape
+.btn-outline-normal {
+    padding: 5px 12px;
+    border: 1px solid $border-light;
+    border-radius: $btn-radius;
+    background-color: transparent;
+    font-family: $font-family-base;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: $text-primary;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+
+    &:hover { background-color: $surface-subtle; border-color: #cbd5e1; }
+
+    &.active {
+        background-color: $highlight-white;
+        border-color: $primary;
+        color: darken($primary, 15%);
+    }
+
+    .dark & {
+        color: $dark-font-color;
+        border-color: $dark-border-color;
+
+        &:hover { background-color: $dark-surface; }
+        &.active {
+            background-color: rgba($primary, 0.1);
+            border-color: $primary;
+            color: $primary;
+        }
+    }
+}
+
+// ─── Form controls ───────────────────────────────────────────────────────────
 .form-control,
 .form-select {
-    border-color: #e2e8f0;
+    font-family: $font-family-base;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: $input-radius;
+    border-color: $border-light;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
 
-    .dark & {
+    &:focus { box-shadow: 0 0 0 3px rgba($primary, 0.18); border-color: $primary; }
+}
+
+textarea.form-control { border-radius: $input-radius; }
+
+// ─── List group ──────────────────────────────────────────────────────────────
+.list-group {
+    border-radius: $card-radius;
+
+    .dark & .list-group-item {
+        background-color: $dark-bg;
+        color: $dark-font-color;
         border-color: $dark-border-color;
     }
 }
 
-// Nav link active accent
-.nav-pills .nav-link.active {
+// ─── Badges — keep Bootstrap badge but styled neutrally ──────────────────────
+// Status indicators now use Status.vue (.status-chip). .badge is only used
+// for count/number badges, not status.
+.badge {
+    font-family: $font-family-base;
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+}
+
+// ─── Modal ───────────────────────────────────────────────────────────────────
+.modal { backdrop-filter: blur(4px); }
+.modal-content {
+    border-radius: $card-radius;
+    border: 1px solid $border-light;
+    box-shadow: 0 8px 40px rgba(0,0,0,.14), 0 2px 8px rgba(0,0,0,.08);
+
+    .dark & {
+        background-color: $dark-surface;
+        border-color: $dark-border-color;
+        box-shadow: 0 16px 60px rgba(0,0,0,.6);
+    }
+}
+.dark .modal-header { border-color: $dark-border-color; }
+.dark .modal-footer { border-color: $dark-border-color; }
+
+// ─── Monitor list ────────────────────────────────────────────────────────────
+.monitor-list {
+    &.scrollbar { overflow-y: auto; }
+
+    @media (max-width: 770px) {
+        &.scrollbar { height: calc(100% - 97px); }
+    }
+
+    .item {
+        display: block;
+        text-decoration: none;
+        padding: 10px 12px;
+        border-radius: 0.625rem;
+        transition: background-color 0.12s ease;
+        color: $text-primary;
+
+        &.disabled { opacity: 0.35; }
+
+        .info { white-space: nowrap; overflow: hidden; }
+
+        &:hover { background-color: $surface-subtle; }
+
+        &.active {
+            background-color: $highlight-white;
+            box-shadow: inset 3px 0 0 $primary;
+        }
+
+        .dark & {
+            color: $dark-font-color;
+            &:hover { background-color: rgba($primary, 0.07); }
+            &.active {
+                background-color: rgba($primary, 0.1);
+                box-shadow: inset 3px 0 0 $primary;
+            }
+        }
+
+        .tags { margin-top: 3px; margin-left: -0.2rem; }
+    }
+}
+
+.dark .monitor-list .item {
+    &:hover { background-color: rgba($primary, 0.07); }
+    &.active {
+        background-color: rgba($primary, 0.1);
+        box-shadow: inset 3px 0 0 $primary;
+    }
+}
+
+// ─── Nav pills ───────────────────────────────────────────────────────────────
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
     background-color: $primary;
     color: #052e16 !important;
     font-weight: 700;
 }
 
-// Section headings
-h5.settings-subheading {
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    color: #0f172a;
+// ─── Alerts ──────────────────────────────────────────────────────────────────
+.alert-success { color: #052e16; background-color: rgba($primary, 0.15); border-color: rgba($primary, 0.3); }
+.alert-info    { color: #0c4a6e; background-color: #e0f2fe; border-color: #bae6fd; }
+.alert-danger  { color: #7f1d1d; background-color: #fee2e2; border-color: #fecaca; }
+.btn-success   { color: #fff; background-color: #16a34a; border-color: #16a34a; }
 
-    .dark & {
+// ─── Dark theme ───────────────────────────────────────────────────────────────
+.dark {
+    background-color: $dark-bg;
+    color: $dark-font-color;
+
+    mark, .mark { background-color: #b6ad86; }
+
+    .form-check-input {
+        background-color: $dark-bg2;
+        border-color: $dark-border-color;
+        &:checked { border-color: $primary; }
+    }
+    .form-switch .form-check-input { background-color: #232f3b; }
+
+    .input-group-text {
+        background-color: $dark-surface;
+        border-color: $dark-border-color;
         color: $dark-font-color;
+    }
+
+    a:not(.btn), .table, .nav-link {
+        color: $dark-font-color;
+        &.btn-info { color: white; }
+    }
+    .incident a, .bg-maintenance a { color: inherit; }
+
+    .form-control,
+    .form-control:focus,
+    .form-select,
+    .form-select:focus {
+        color: $dark-font-color;
+        background-color: $dark-bg2;
+        border-color: $dark-border-color;
+    }
+    .form-select:disabled {
+        color: rgba($dark-font-color, 0.5);
+        background-color: $dark-bg;
+    }
+    .form-control:disabled, .form-control[readonly] {
+        background-color: $dark-surface;
+        opacity: 1;
+    }
+
+    .table-hover > tbody > tr:hover > * {
+        --bs-table-accent-bg: #{$dark-bg2};
+        color: $dark-font-color;
+    }
+
+    .bg-primary { color: $dark-font-color2; }
+    .btn-secondary { color: white; }
+
+    .btn-warning {
+        color: $dark-font-color2;
+        &:hover, &:active, &:focus, &.active { color: $dark-font-color2; }
+    }
+
+    .btn-close {
+        box-shadow: none;
+        filter: invert(1);
+        &:hover { opacity: 0.6; }
+    }
+
+    // Pagination
+    .page-item.disabled .page-link { background-color: $dark-bg; border-color: $dark-border-color; }
+    .page-link { background-color: $dark-bg; border-color: $dark-border-color; color: $dark-font-color; }
+
+    .alert {
+        &.bg-info, &.bg-warning, &.bg-danger, &.bg-maintenance, &.bg-light {
+            color: $dark-font-color2;
+        }
     }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
+// ─── Optgroup ────────────────────────────────────────────────────────────────
+optgroup { color: #94a3b8; option { color: #212529; } }
+.dark optgroup { color: #475569; option { color: $dark-font-color; } }
 
-// Localization
+// ─── Table responsive ────────────────────────────────────────────────────────
+@media (max-width: 550px) {
+    .table-shadow-box {
+        padding: 10px !important;
 
+        thead { display: none; }
+
+        tbody .shadow-box { background-color: white; }
+        .dark & tbody .shadow-box { background-color: $dark-bg2; }
+
+        tr {
+            margin-top: 0 !important;
+            padding: 4px 10px !important;
+            display: block;
+            margin-bottom: 6px;
+
+            td:first-child { font-weight: bold; }
+            td:nth-child(-n+3) { text-align: center; }
+            td:last-child { text-align: left; }
+            td {
+                border-bottom: 1px solid $border-light;
+                display: block;
+                padding: 4px;
+                .dark & { border-bottom-color: $dark-border-color; }
+                .badge { margin: auto; display: block; width: 30%; }
+            }
+        }
+    }
+}
+
+// ─── Transitions ─────────────────────────────────────────────────────────────
+.slide-fade-enter-active, .slide-fade-leave-active { transition: all 0.2s $easing-in; }
+.slide-fade-enter-from, .slide-fade-leave-to { transform: translateY(50px); opacity: 0; }
+
+.slide-fade-right-enter-active, .slide-fade-right-leave-active { transition: all 0.2s $easing-in; }
+.slide-fade-right-enter-from, .slide-fade-right-leave-to { transform: translateX(50px); opacity: 0; }
+
+.slide-fade-up-enter-active, .slide-fade-up-leave-active { transition: all 0.2s $easing-in; }
+.slide-fade-up-enter-from, .slide-fade-up-leave-to { transform: translateY(-50px); opacity: 0; }
+
+// ─── Misc interactive ────────────────────────────────────────────────────────
+[contenteditable="true"] {
+    transition: background-color $easing-in 0.2s;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-radius: 6px;
+
+    &.no-bg { background-color: transparent !important; }
+    &:focus { outline: none; background-color: rgba(0, 0, 0, 0.05); }
+    &:hover { background-color: rgba(0, 0, 0, 0.04); }
+
+    .dark & {
+        background-color: rgba(255, 255, 255, 0.05);
+        &:focus, &:hover { background-color: rgba(255, 255, 255, 0.08); }
+    }
+}
+
+.action {
+    transition: transform $easing-in 0.2s;
+    &:hover { cursor: pointer; transform: scale(1.2); }
+}
+
+.zoom-cursor { cursor: zoom-in; }
+.spinner { color: $primary; }
+
+// ─── Code editor ─────────────────────────────────────────────────────────────
+.prism-editor__textarea { outline: none !important; }
+.prism-editor__container .important { font-weight: var(--bs-body-font-weight) !important; }
+
+.code-editor, .css-editor {
+    border-radius: $card-radius;
+    padding: 10px 5px;
+    border: 1px solid $border-light;
+
+    .dark & { background: $dark-bg2; border-color: $dark-border-color; }
+}
+
+// ─── Settings ────────────────────────────────────────────────────────────────
+h5.settings-subheading {
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: $text-primary;
+
+    &::after {
+        content: "";
+        display: block;
+        width: 100%;
+        padding-top: 8px;
+        border-bottom: 1px solid $border-light;
+    }
+
+    .dark & {
+        color: $dark-font-color;
+        &::after { border-bottom-color: $dark-border-color; }
+    }
+}
+
+// ─── Misc ────────────────────────────────────────────────────────────────────
+.VuePagination__count { font-size: 13px; text-align: center; }
+.vue-image-crop-upload .vicp-wrap { border-radius: $card-radius !important; }
+
+@media (max-width: 770px) { .toast-container { margin-bottom: 100px !important; } }
+@media (max-width: 550px) { .toast-container { margin-bottom: 126px !important; } }
+
+// ─── Localization ────────────────────────────────────────────────────────────
 @import "localization.scss";

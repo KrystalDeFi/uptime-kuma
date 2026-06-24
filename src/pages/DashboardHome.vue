@@ -308,11 +308,28 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/vars";
 
+// Stat number in Quick Stats card
 .num {
-    font-size: 30px;
-    color: $primary;
-    font-weight: bold;
+    font-family: $font-family-base;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
     display: block;
+    margin-top: 4px;
+    color: $text-primary;
+
+    .dark & { color: $dark-font-color; }
+}
+
+// Label above the number
+h3 {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: $text-secondary;
+    margin-bottom: 0;
 }
 
 .shadow-box {
@@ -320,11 +337,9 @@ export default {
 }
 
 table {
-    font-size: 14px;
+    font-size: 0.875rem;
 
-    tr {
-        transition: all ease-in-out 0.2ms;
-    }
+    tr { transition: background-color 0.12s ease; }
 
     @media (max-width: 550px) {
         table-layout: fixed;
@@ -333,18 +348,12 @@ table {
 }
 
 @media screen and (max-width: 1280px) {
-    .name-column {
-        min-width: 150px;
-    }
+    .name-column { min-width: 150px; }
 }
 
 @media screen and (min-aspect-ratio: 4/3) {
-    .name-column {
-        min-width: 200px;
-    }
+    .name-column { min-width: 200px; }
 }
 
-.table-wrapper {
-    overflow-x: auto;
-}
+.table-wrapper { overflow-x: auto; }
 </style>
