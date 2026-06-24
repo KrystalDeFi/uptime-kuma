@@ -22,46 +22,49 @@
             </div>
 
             <router-link :to="monitorURL(monitor.id)" class="item" :class="{ disabled: !monitor.active }">
-                <div class="row">
-                    <div class="small-padding d-flex gap-2 align-items-center" :class="monitorStyle">
-                        <div class="me-1">
-                            <Uptime :monitor="monitor" type="24" :pill="true" />
-                        </div>
-                        <div class="d-flex align-items-center gap-2 flex-fill" style="min-width: 0">
-                            <span v-if="hasChildren" class="collapse-padding" @click.prevent="changeCollapsed">
-                                <font-awesome-icon
-                                    icon="chevron-down"
-                                    class="animated"
-                                    :class="{ collapsed: isCollapsed }"
-                                />
-                            </span>
-                            <div class="flex-fill text-truncate" style="min-width: 0">
-                                <div class="text-truncate">{{ monitor.name }}</div>
-                                <div v-if="monitor.tags.length > 0" class="tags gap-1">
-                                    <Tag
-                                        v-for="tag in monitor.tags"
-                                        :key="tag"
-                                        :item="tag"
-                                        :size="'sm'"
-                                        :title="tag.name"
-                                    />
-                                </div>
-                            </div>
+                <!-- Main row: collapse | name | heartbeat bar | uptime % -->
+                <div class="monitor-row">
+                    <!-- Collapse toggle (group monitors only) -->
+                    <span v-if="hasChildren" class="collapse-icon" @click.prevent="changeCollapsed">
+                        <font-awesome-icon
+                            icon="chevron-down"
+                            class="animated"
+                            :class="{ collapsed: isCollapsed }"
+                        />
+                    </span>
+
+                    <!-- Name + tags -->
+                    <div class="monitor-name">
+                        <div class="name-text text-truncate">{{ monitor.name }}</div>
+                        <div v-if="monitor.tags.length > 0" class="tags gap-1">
+                            <Tag
+                                v-for="tag in monitor.tags"
+                                :key="tag"
+                                :item="tag"
+                                :size="'sm'"
+                                :title="tag.name"
+                            />
                         </div>
                     </div>
+
+                    <!-- Heartbeat bar (normal mode) -->
                     <div
                         v-show="$root.userHeartbeatBar == 'normal'"
                         :key="$root.userHeartbeatBar"
-                        class="col-3 col-xl-6"
+                        class="monitor-heartbeat"
                     >
                         <HeartbeatBar ref="heartbeatBar" size="small" :monitor-id="monitor.id" />
                     </div>
+
+                    <!-- Uptime % anchored right in a fixed-width slot -->
+                    <div class="monitor-uptime-slot">
+                        <Uptime :monitor="monitor" type="24" :pill="true" />
+                    </div>
                 </div>
 
-                <div v-if="$root.userHeartbeatBar == 'bottom'" class="row">
-                    <div class="col-12 bottom-style">
-                        <HeartbeatBar ref="heartbeatBar" size="small" :monitor-id="monitor.id" />
-                    </div>
+                <!-- Heartbeat bar (bottom mode) -->
+                <div v-if="$root.userHeartbeatBar == 'bottom'" class="monitor-heartbeat-bottom">
+                    <HeartbeatBar ref="heartbeatBar" size="small" :monitor-id="monitor.id" />
                 </div>
             </router-link>
         </div>
@@ -334,27 +337,70 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/vars.scss";
 
-.small-padding {
-    padding-left: 5px !important;
-    padding-right: 5px !important;
+// ─── Monitor row layout ───────────────────────────────────────────────────────
+.monitor-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    flex-wrap: nowrap;
 }
 
+// Fixed-width slot so the uptime % never shifts the layout
+.monitor-uptime-slot {
+    flex: 0 0 52px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.monitor-name {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.name-text {
+    font-weight: 600;
+    font-size: 0.875rem;
+    line-height: 1.3;
+}
+
+.monitor-heartbeat {
+    flex: 0 0 40%;
+    min-width: 0;
+
+    @media (max-width: 991px) {
+        flex: 0 0 30%;
+    }
+}
+
+.monitor-heartbeat-bottom {
+    margin-top: 6px;
+}
+
+.collapse-icon {
+    display: inline-flex;
+    align-items: center;
+    color: $secondary-text;
+    flex-shrink: 0;
+}
+
+// ─── Tags ────────────────────────────────────────────────────────────────────
 .tags {
-    margin-top: 4px;
-    padding-left: 4px;
+    margin-top: 3px;
     display: flex;
     flex-wrap: wrap;
-    gap: 0;
+    gap: 3px;
 }
 
-.collapsed {
-    transform: rotate(-90deg);
-}
+// ─── Animation ───────────────────────────────────────────────────────────────
+.collapsed { transform: rotate(-90deg); }
+.animated  { transition: all 0.2s $easing-in; }
 
-.animated {
-    transition: all 0.2s $easing-in;
-}
-
+// ─── Select mode ─────────────────────────────────────────────────────────────
 .select-input-wrapper {
     float: left;
     margin-top: 15px;
@@ -365,40 +411,28 @@ export default {
     z-index: 15;
 }
 
+// ─── Drag & drop ─────────────────────────────────────────────────────────────
 .drag-over {
-    border: 4px dashed $primary;
-    border-radius: 0.5rem;
+    border: 2px dashed $primary;
+    border-radius: 0.625rem;
     background-color: $highlight-white;
+
+    .dark & { background-color: $dark-bg2; }
 }
 
-.dark {
-    .drag-over {
-        background-color: $dark-bg2;
-    }
-}
-
-/* -4px on all due to border-width */
 .monitor-list .drag-over .item {
-    padding: 9px 11px 6px 11px;
+    padding: 10px 13px;
 }
 
 .draggable-item {
     cursor: grab;
     position: relative;
 
-    /* We don't want the padding change due to the border animated */
     .item {
-        padding: 12px 15px;
+        padding: 10px 12px;
         transition: none !important;
     }
 
-    &.dragging {
-        cursor: grabbing;
-    }
-}
-
-.bottom-style {
-    margin-left: -10px;
-    margin-top: 5px;
+    &.dragging { cursor: grabbing; }
 }
 </style>

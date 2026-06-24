@@ -1,23 +1,60 @@
-$primary: #5cdd8b;
-$danger: #dc3545;
-$warning: #f8a306;
-$maintenance: #1747f5;
-$link-color: #111;
+// ─── Brand ───────────────────────────────────────────────────────────────────
+$primary:     #22c55e;   // green-500
+$danger:      #ef4444;   // red-500
+$warning:     #f59e0b;   // amber-500
+$maintenance: #3b82f6;   // blue-500
+$link-color:  #0f172a;
 $border-radius: 50rem;
-$secondary-text: #aaa;
 
-$highlight: #7ce8a4;
-$highlight-white: #e7faec;
+// Status semantic aliases (used by dot indicators)
+$status-up:          #22c55e;
+$status-down:        #ef4444;
+$status-pending:     #f59e0b;
+$status-maintenance: #3b82f6;
+$status-unknown:     #94a3b8;
 
-$dark-font-color: #b1b8c0;
-$dark-font-color2: #020b05;
-$dark-bg: #0d1117;
-$dark-bg2: #070a10;
-$dark-border-color: #1d2634;
-$dark-header-bg: #161b22;
+// Tints for hover/active backgrounds
+$highlight:       #86efac;   // green-300
+$highlight-white: #f0fdf4;   // green-50
 
-$easing-in: cubic-bezier(0.54, 0.78, 0.55, 0.97);
-$easing-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+// ─── Typography ──────────────────────────────────────────────────────────────
+$font-family-base: "Manrope", "Twemoji Country Flags", BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+// ─── Light mode surfaces ─────────────────────────────────────────────────────
+$surface-bg:        #ffffff;
+$surface-raised:    #ffffff;
+$surface-subtle:    #f8fafc;   // slate-50
+$border-light:      #e2e8f0;   // slate-200
+$border-light-soft: rgba(0, 0, 0, 0.06);
+$text-primary:      #0f172a;   // slate-900
+$text-secondary:    #64748b;   // slate-500
+$secondary-text:    #64748b;
+
+// ─── Dark mode surfaces ───────────────────────────────────────────────────────
+$dark-bg:           #0f172a;   // slate-900
+$dark-bg2:          #020617;   // slate-950
+$dark-surface:      #1e293b;   // slate-800
+$dark-header-bg:    #1e293b;   // slate-800
+$dark-border-color: #334155;   // slate-700
+$dark-font-color:   #cbd5e1;   // slate-300
+$dark-font-color2:  #020b05;
+$dark-text-muted:   #475569;   // slate-600
+
+// ─── Shape & spacing ─────────────────────────────────────────────────────────
+$card-radius:    0.875rem;  // 14px — main container radius
+$input-radius:   0.5rem;    // 8px
+$btn-radius:     0.5rem;    // 8px
+$chip-radius:    6px;       // status chips
+
+// ─── Elevation / shadows ─────────────────────────────────────────────────────
+$shadow-card:  0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.07);
+$shadow-float: 0 4px 24px rgba(0,0,0,.10), 0 1px 4px rgba(0,0,0,.06);
+
+// ─── Easing ──────────────────────────────────────────────────────────────────
+$easing-in:     cubic-bezier(0.54, 0.78, 0.55, 0.97);
+$easing-out:    cubic-bezier(0.25, 0.46, 0.45, 0.94);
 $easing-in-out: cubic-bezier(0.79, 0.14, 0.15, 0.86);
 
-$dropdown-border-radius: 0.5rem;
+// Legacy alias kept for backward compat
+$dropdown-border-radius: $card-radius;

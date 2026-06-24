@@ -13,13 +13,12 @@
         </div>
 
         <!-- Desktop header -->
-        <header v-if="!$root.isMobile" class="d-flex flex-wrap justify-content-center py-3 mb-3 border-bottom">
+        <header v-if="!$root.isMobile" class="d-flex flex-wrap justify-content-center py-3 mb-3 border-bottom app-header">
             <router-link
                 to="/dashboard"
-                class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none"
+                class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none ms-4"
             >
-                <object class="bi me-2 ms-4" width="40" height="40" data="/icon.svg" />
-                <span class="fs-4 title">{{ $t("Uptime Kuma") }}</span>
+                <img src="https://krystal.app/assets/images/logos/krystal.svg" alt="Krystal" class="brand-logo" />
             </router-link>
 
             <a
@@ -118,10 +117,9 @@
         </header>
 
         <!-- Mobile header -->
-        <header v-else class="d-flex flex-wrap justify-content-center pt-2 pb-2 mb-3">
+        <header v-else class="d-flex flex-wrap justify-content-center pt-2 pb-2 mb-3 app-header">
             <router-link to="/dashboard" class="d-flex align-items-center text-dark text-decoration-none">
-                <object class="bi" width="40" height="40" data="/icon.svg" />
-                <span class="fs-4 title ms-2">Uptime Kuma</span>
+                <img src="https://krystal.app/assets/images/logos/krystal.svg" alt="Krystal" class="brand-logo" />
             </router-link>
         </header>
 
@@ -241,18 +239,25 @@ export default {
 @import "../assets/vars.scss";
 
 .nav-link {
+    font-family: $font-family-base;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border-radius: $btn-radius;
+    padding: 0.42rem 0.875rem;
+    transition: background-color 0.12s ease, color 0.12s ease;
+    // White-ish on the dark header
+    color: rgba(255, 255, 255, 0.65);
+
     &:hover {
-        background-color: $primary;
-        color: #fff;
+        background-color: rgba(255, 255, 255, 0.08);
+        color: #ffffff;
+    }
 
-        .dark & {
-            background-color: $primary;
-            color: #000;
-        }
-
-        &.active {
-            background-color: $highlight;
-        }
+    &.router-link-active,
+    &.active {
+        background-color: rgba(255, 255, 255, 0.14);
+        color: #ffffff !important;
+        font-weight: 700;
     }
 
     &.status-page {
@@ -264,13 +269,13 @@ export default {
     z-index: 1000;
     position: fixed;
     bottom: 0;
-    height: calc(60px + env(safe-area-inset-bottom));
+    height: calc(62px + env(safe-area-inset-bottom));
     width: 100%;
     left: 0;
-    background-color: #fff;
-    box-shadow:
-        0 15px 47px 0 rgba(0, 0, 0, 0.05),
-        0 5px 14px 0 rgba(0, 0, 0, 0.05);
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.06), 0 -4px 16px rgba(0, 0, 0, 0.04);
     text-align: center;
     white-space: nowrap;
     padding: 0 10px env(safe-area-inset-bottom);
@@ -281,15 +286,18 @@ export default {
         display: inline-block;
         height: 100%;
         padding: 8px 10px 0;
-        font-size: 13px;
-        color: #c1c1c1;
+        font-family: "Manrope", BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: #94a3b8;
         overflow: hidden;
         text-decoration: none;
+        transition: color 0.15s ease;
 
         &.router-link-exact-active,
         &.active {
             color: $primary;
-            font-weight: bold;
+            font-weight: 700;
         }
 
         div {
@@ -302,8 +310,17 @@ main {
     min-height: calc(100vh - 160px);
 }
 
-.title {
-    font-weight: bold;
+.app-header {
+    background-color: #0f172a;
+    border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.brand-logo {
+    height: 28px;
+    width: auto;
+    display: block;
+    // SVG is dark — invert to white on the dark header
+    filter: brightness(0) invert(1);
 }
 
 .nav {
@@ -328,53 +345,65 @@ main {
         display: flex;
         gap: 6px;
         align-items: center;
-        background-color: rgba(200, 200, 200, 0.2);
-        padding: 0.5rem 0.8rem;
+        background-color: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: $btn-radius;
+        padding: 0.38rem 0.75rem;
+        transition: border-color 0.12s ease, background-color 0.12s ease;
+        color: rgba(255, 255, 255, 0.85) !important;
 
         &:hover {
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.35);
         }
     }
 
     .dropdown-menu {
-        transition: all 0.2s;
         padding-left: 0;
-        padding-bottom: 0;
-        margin-top: 8px !important;
-        border-radius: 16px;
+        padding-bottom: 4px;
+        padding-top: 4px;
+        margin-top: 6px !important;
+        border-radius: $card-radius;
         overflow: hidden;
+        border: 1px solid $border-light;
+        box-shadow: $shadow-float;
 
         .dropdown-divider {
-            margin: 0;
-            border-top: 1px solid rgba(0, 0, 0, 0.4);
+            margin: 4px 0;
+            border-top: 1px solid $border-light;
             background-color: transparent;
         }
 
         .dropdown-item-text {
-            font-size: 14px;
-            padding-bottom: 0.7rem;
+            font-family: $font-family-base;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: $text-secondary;
+            padding-bottom: 0.5rem;
         }
 
         .dropdown-item {
-            padding: 0.7rem 1rem;
+            font-family: $font-family-base;
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 0.6rem 1rem;
+            color: $text-primary;
+            transition: background-color 0.1s ease;
+            &:hover { background-color: $surface-subtle; }
         }
 
         .dark & {
-            background-color: $dark-bg;
+            background-color: $dark-surface;
             color: $dark-font-color;
             border-color: $dark-border-color;
+            box-shadow: 0 4px 32px rgba(0,0,0,.5);
+
+            .dropdown-divider { border-top-color: $dark-border-color; }
 
             .dropdown-item {
                 color: $dark-font-color;
-
-                &.active {
-                    color: $dark-font-color2;
-                    background-color: $highlight !important;
-                }
-
-                &:hover {
-                    background-color: $dark-bg2;
-                }
+                &.active { color: $dark-font-color2; background-color: $highlight !important; }
+                &:hover { background-color: $dark-bg; }
             }
         }
     }
@@ -383,29 +412,34 @@ main {
         display: flex;
         align-items: center;
         justify-content: center;
-        color: white;
+        color: #052e16;
         background-color: $primary;
-        width: 24px;
-        height: 24px;
-        margin-right: 5px;
-        border-radius: 50rem;
-        font-weight: bold;
-        font-size: 10px;
+        width: 28px;
+        height: 28px;
+        margin-right: 4px;
+        border-radius: 50%;
+        font-family: $font-family-base;
+        font-weight: 800;
+        font-size: 11px;
+        flex-shrink: 0;
     }
 }
 
 .dark {
-    header {
-        background-color: $dark-header-bg;
-        border-bottom-color: $dark-header-bg !important;
-
-        span {
-            color: #f0f6fc;
-        }
-    }
-
     .bottom-nav {
-        background-color: $dark-bg;
+        background-color: rgba($dark-bg, 0.9);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        box-shadow: 0 -1px 0 $dark-border-color;
+
+        a {
+            color: #475569;
+
+            &.router-link-exact-active,
+            &.active {
+                color: $primary;
+            }
+        }
     }
 }
 

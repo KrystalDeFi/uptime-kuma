@@ -47,64 +47,50 @@
                         >
                             <template #item="monitor">
                                 <div class="item" data-testid="monitor">
-                                    <div class="row">
-                                        <div class="col-9 col-xl-6 small-padding">
-                                            <div class="info">
-                                                <font-awesome-icon
-                                                    v-if="editMode"
-                                                    icon="arrows-alt-v"
-                                                    class="action drag me-3"
-                                                />
-                                                <font-awesome-icon
-                                                    v-if="editMode"
-                                                    icon="times"
-                                                    class="action remove me-3"
-                                                    @click="removeMonitor(group.index, monitor.index)"
-                                                />
+                                    <!-- Edit mode actions -->
+                                    <div v-if="editMode" class="edit-actions">
+                                        <font-awesome-icon icon="arrows-alt-v" class="action drag" />
+                                        <font-awesome-icon
+                                            icon="times"
+                                            class="action remove"
+                                            @click="removeMonitor(group.index, monitor.index)"
+                                        />
+                                        <font-awesome-icon
+                                            icon="cog"
+                                            class="action link-active btn-link"
+                                            data-testid="monitor-settings"
+                                            @click="$refs.monitorSettingDialog.show(group, monitor)"
+                                        />
+                                    </div>
 
-                                                <font-awesome-icon
-                                                    v-if="editMode"
-                                                    icon="cog"
-                                                    class="action me-3 ms-0"
-                                                    :class="{ 'link-active': true, 'btn-link': true }"
-                                                    data-testid="monitor-settings"
-                                                    @click="$refs.monitorSettingDialog.show(group, monitor)"
+                                    <!-- Main monitor row -->
+                                    <div class="monitor-row">
+                                        <!-- Name + tags -->
+                                        <div class="monitor-meta">
+                                            <a
+                                                v-if="showLink(monitor)"
+                                                :href="monitor.element.url"
+                                                class="monitor-name"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                data-testid="monitor-name"
+                                            >
+                                                {{ monitor.element.name }}
+                                            </a>
+                                            <span v-else class="monitor-name" data-testid="monitor-name">
+                                                {{ monitor.element.name }}
+                                            </span>
+                                            <div class="monitor-tags">
+                                                <Tag
+                                                    v-if="showCertificateExpiry && monitor.element.certExpiryDaysRemaining"
+                                                    :item="{
+                                                        name: $t('Cert Exp.'),
+                                                        value: formattedCertExpiryMessage(monitor),
+                                                        color: certExpiryColor(monitor),
+                                                    }"
+                                                    :size="'sm'"
                                                 />
-                                                <Status
-                                                    v-if="showOnlyLastHeartbeat"
-                                                    :status="statusOfLastHeartbeat(monitor.element.id)"
-                                                />
-                                                <Uptime v-else :monitor="monitor.element" type="24" :pill="true" />
-                                                <a
-                                                    v-if="showLink(monitor)"
-                                                    :href="monitor.element.url"
-                                                    class="item-name"
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    data-testid="monitor-name"
-                                                >
-                                                    {{ monitor.element.name }}
-                                                </a>
-                                                <p v-else class="item-name" data-testid="monitor-name">
-                                                    {{ monitor.element.name }}
-                                                </p>
-                                            </div>
-                                            <div class="extra-info">
-                                                <div
-                                                    v-if="
-                                                        showCertificateExpiry && monitor.element.certExpiryDaysRemaining
-                                                    "
-                                                >
-                                                    <Tag
-                                                        :item="{
-                                                            name: $t('Cert Exp.'),
-                                                            value: formattedCertExpiryMessage(monitor),
-                                                            color: certExpiryColor(monitor),
-                                                        }"
-                                                        :size="'sm'"
-                                                    />
-                                                </div>
-                                                <div v-if="showTags">
+                                                <template v-if="showTags">
                                                     <Tag
                                                         v-for="tag in monitor.element.tags"
                                                         :key="tag"
@@ -112,11 +98,22 @@
                                                         :size="'sm'"
                                                         data-testid="monitor-tag"
                                                     />
-                                                </div>
+                                                </template>
                                             </div>
                                         </div>
-                                        <div :key="$root.userHeartbeatBar" class="col-3 col-xl-6">
+
+                                        <!-- Heartbeat bar -->
+                                        <div :key="$root.userHeartbeatBar" class="monitor-heartbeat">
                                             <HeartbeatBar size="mid" :monitor-id="monitor.element.id" />
+                                        </div>
+
+                                        <!-- Status / uptime in a fixed-width slot on the right -->
+                                        <div class="monitor-uptime-slot">
+                                            <Status
+                                                v-if="showOnlyLastHeartbeat"
+                                                :status="statusOfLastHeartbeat(monitor.element.id)"
+                                            />
+                                            <Uptime v-else :monitor="monitor.element" type="24" :pill="true" />
                                         </div>
                                     </div>
                                 </div>
@@ -325,15 +322,6 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/vars";
 
-.extra-info {
-    display: flex;
-    margin-bottom: 0.5rem;
-}
-
-.extra-info > div > div:first-child {
-    margin-left: 0 !important;
-}
-
 .no-monitor-msg {
     position: absolute;
     width: 100%;
@@ -345,16 +333,72 @@ export default {
     min-height: 46px;
 }
 
-.item-name {
-    padding-left: 5px;
-    padding-right: 5px;
-    margin: 0;
-    display: inline-block;
+// ─── Monitor row ─────────────────────────────────────────────────────────────
+.item {
+    padding: 10px 16px;
+}
+
+.edit-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.monitor-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.monitor-meta {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+}
+
+.monitor-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: $text-primary;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &:hover { color: $primary; }
+
+    .dark & { color: $dark-font-color; }
+}
+
+.monitor-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.monitor-heartbeat {
+    flex: 0 0 40%;
+    min-width: 0;
+
+    @media (max-width: 767px) {
+        flex: 0 0 30%;
+    }
+}
+
+.monitor-uptime-slot {
+    flex: 0 0 64px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .btn-link {
     color: #bbbbbb;
-    margin-left: 5px;
 }
 
 .link-active {
