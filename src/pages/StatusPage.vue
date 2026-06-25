@@ -1728,6 +1728,20 @@ footer {
             background-color: $dark-header-bg;
         }
     }
+
+    .logo-wrapper {
+        .icon-upload {
+            background-color: $dark-header-bg;
+        }
+
+        .reset-top-left {
+            background: $dark-header-bg;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+        }
+    }
 }
 
 .domain-name-list {
