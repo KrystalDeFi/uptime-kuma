@@ -1,4 +1,7 @@
 <template>
+    <header class="krystal-header">
+        <img src="https://krystal.app/assets/images/logos/krystal.svg" alt="Krystal" class="krystal-logo" />
+    </header>
     <div v-if="loadedTheme" class="container mt-3">
         <!-- Sidebar for edit mode -->
         <div v-if="enableEditMode" class="sidebar" data-testid="edit-sidebar">
@@ -1495,6 +1498,21 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/vars.scss";
+
+.krystal-header {
+    background-color: #0f172a;
+    padding: 12px 24px;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+}
+
+.krystal-logo {
+    height: 24px;
+    width: auto;
+    display: block;
+    filter: brightness(0) invert(1);
+}
 
 .overall-status {
     font-weight: bold;
